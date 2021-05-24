@@ -1,0 +1,99 @@
+﻿<Window x:Class="TarkovPriceCheck.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="http://schemas.modernwpf.com/2019"
+        ui:WindowHelper.UseModernWindowStyle="True"
+        xmlns:local="clr-namespace:TarkovPriceCheck"
+        mc:Ignorable="d"
+        Title="Tarkov Price Check" Height="450" Width="800" Loaded="Window_Loaded" Icon="/Resources/icon_64.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TabControl Grid.Row="0">
+            <TabItem Header="Search">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnSearch" Grid.Column="0" Height="32" Margin="2" ToolTip="Manual search" Click="btnSearch_Click">
+                            <Button.Content>
+                                <Image Source="Resources/Search_32x.png"/>
+                            </Button.Content>
+                        </Button>
+                        <TextBox x:Name="txtSearch" Grid.Column="1" Margin="2" ToolTip="Enter item name for manual search" KeyUp="txtSearch_KeyUp"/>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <DataGrid x:Name="dgResults" SelectionMode="Single" CanUserDeleteRows="False" CanUserAddRows="False" IsReadOnly="True" AutoGenerateColumns="False" Grid.Column="0">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="Icon">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Source="{Binding Path=Icon}" MaxWidth="63" MaxHeight="63" HorizontalAlignment="Left" VerticalAlignment="Top" Stretch="Uniform" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Path=Name}"/>
+                                <DataGridTextColumn Header="Flea Price" Binding="{Binding Path=FleaPriceString}"/>
+                                <DataGridTextColumn Header="Trader Value" Binding="{Binding Path=BestTraderString}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Expander x:Name="expOverflow" ExpandDirection="Right" Grid.Column="1">
+                            <ListBox x:Name="lstOverflow" Width="200" SelectionChanged="lstOverflow_SelectionChanged"></ListBox>
+                        </Expander>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Settings">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <CheckBox x:Name="chkListen" Content="Search via voice recognition" Margin="5" Grid.Row="0" Checked="chkListen_Checked" Unchecked="chkListen_Checked"/>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Keyword to trigger price check: " Margin="5" VerticalAlignment="Center" Grid.Column="0"/>
+                        <TextBox x:Name="txtKeyword" Margin="5" Grid.Column="1" TextChanged="txtKeyword_TextChanged"/>
+                    </Grid>
+                    <CheckBox x:Name="chkCheckUpdate" Content="Check for new version on app start" Margin="5" Grid.Row="2" Checked="chkCheckUpdate_Checked" Unchecked="chkCheckUpdate_Checked"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Log">
+                <Grid>
+                    <RichTextBox x:Name="txtLog" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <StatusBar x:Name="statusbarMain" VerticalAlignment="Bottom" Grid.Row="1">
+            <StatusBarItem Margin="0,0,10,0">
+                <Button x:Name="btnReportBug" Height="26" ToolTip="Report a bug" Click="btnReportBug_Click">
+                    <Button.Content>
+                        <Image Source="Resources\Bug_32x.png"/>
+                    </Button.Content>
+                </Button>
+            </StatusBarItem>
+            <StatusBarItem>
+                <Label x:Name="lblLastMessage" Margin="5"></Label>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

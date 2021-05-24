@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
+    <StartupObject>TarkovPriceCheck.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Bug_32x.png" />
+    <None Remove="Resources\icon_128.png" />
+    <None Remove="Resources\icon_256.png" />
+    <None Remove="Resources\icon_64.png" />
+    <None Remove="Resources\Search_32x.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ModernWpfUis" Version="1.2.0" />
+    <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    <PackageReference Include="System.Speech" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Bug_32x.png" />
+    <Resource Include="Resources\icon_128.png" />
+    <Resource Include="Resources\icon_256.png" />
+    <Resource Include="Resources\icon_64.png" />
+    <Resource Include="Resources\Search_32x.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="dictionary.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(TargetDir)TarkovPriceCheck.runtimeconfig.json&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;copy &quot;$(TargetDir)TarkovPriceCheck.deps.json&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;copy &quot;$(TargetDir)TarkovPriceCheck.dll&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;copy &quot;$(TargetDir)TarkovPriceCheck.exe&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;copy &quot;$(TargetDir)ModernWpf.dll&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;copy &quot;$(TargetDir)System.Speech.dll&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;copy &quot;$(TargetDir)dictionary.json&quot; &quot;$(TargetDir)app.publish\&quot;&#xD;&#xA;if $(ConfigurationName) == Release &quot;C:\Program Files\7-Zip\7z.exe&quot; a %25userprofile%25\Desktop\TarkovPriceCheck.zip &quot;$(TargetDir)app.publish\*&quot;" />
+  </Target>
+
+</Project>
